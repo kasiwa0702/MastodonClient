@@ -1,11 +1,11 @@
+package io.keiji.sample.mastodonclient
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import io.keiji.sample.mastodonclient.databinding.ActivityMainBinding
+import android.os.Bundle
+import android.widget.TextView
+
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(
