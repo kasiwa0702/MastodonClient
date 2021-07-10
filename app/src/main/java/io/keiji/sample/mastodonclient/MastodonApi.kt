@@ -1,12 +1,13 @@
 package io.keiji.sample.mastodonclient
 
-import android.telecom.Call
+
+import retrofit2.http.GET
+import okhttp3.ResponseBody
 
 
 interface MastodonApi  {
 
     @GET("api/vl/timelines/public")
-    fun fetchPublicTimeline(
-
-    ): Call<ResponseBody>
+    suspend fun fetchPublicTimeline(
+    ): ResponseBody
 }
