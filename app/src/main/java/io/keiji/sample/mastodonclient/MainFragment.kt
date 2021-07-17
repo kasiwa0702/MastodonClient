@@ -15,10 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainFragment:Fragment(R.layout.fragment_main) {
 
-    class MainFragment : MainFragment(R.layout.fragment_main) {
 
     companion object{
         private val TAG = MainFragment::class.java.simpleName
@@ -31,6 +31,7 @@ private val moshi = Moshi.Builder()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(API_BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
     private val api = retrofit.create(MastodonApi::class.java)
 
@@ -44,7 +45,7 @@ private val moshi = Moshi.Builder()
             binding?.button?.text = "clicked"
             CoroutineScope(Dispatchers.IO).launch {
                 val tootList = api.fetchPublicTimeline()
-                ShowTootList(tootList)
+                showTootList(tootList)
         }
         }
     }
@@ -59,7 +60,6 @@ private val moshi = Moshi.Builder()
         val binding = binding ?: return@withContext
         val accountNameList = tootList.map { it.account.displayName}
         binding.button.text = accountNameList.joinToString ("\n")
-    }
     }
 
 }
