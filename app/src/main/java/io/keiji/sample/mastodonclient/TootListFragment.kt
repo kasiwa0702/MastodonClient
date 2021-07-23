@@ -39,7 +39,7 @@ class TootListFragment : Fragment(R.layout.fragment_main) {
         .build()
     private val api = retrofit.create(MastodonApi::class.java)
 
-    private val coroutineScope = CoroutineScope(DialogPreference.IO)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
@@ -63,8 +63,8 @@ class TootListFragment : Fragment(R.layout.fragment_main) {
         }
 
         coroutineScope.launch {
-            val tootList = api.fetchPublicTimeline()
-            tootList.addAll(tootList)
+            val tootListResponse = api.fetchPublicTimeline()
+            tootList.addAll(tootListResponse)
             reloadTootList()
         }
     }
