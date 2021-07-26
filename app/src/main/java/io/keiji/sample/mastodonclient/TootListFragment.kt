@@ -21,11 +21,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class TootListFragment : Fragment(R.layout.fragment_main) {
+class TootListFragment : Fragment(R.layout.fragment_toot_list) {
 
     companion object{
         val TAG = TootListFragment::class.java.simpleName
-        private const val API_BASE_URL = "https://androok2020.keiji.io"
+        private const val API_BASE_URL = "https://androidbook2020.keiji.io"
     }
     private var binding: FragmentTootListBinding? = null
 
