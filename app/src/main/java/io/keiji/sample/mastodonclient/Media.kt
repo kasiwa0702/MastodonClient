@@ -1,4 +1,4 @@
-package io.keiji.sample.photos
+package io.keiji.sample.mastodonclient
 
 import com.squareup.moshi.Json
 
