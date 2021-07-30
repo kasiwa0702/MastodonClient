@@ -17,7 +17,7 @@ fun TextView.setSpannedString(content: String) {
  @BindingAdapter("media")
 fun ImageView.setMedia(media: Media?) {
     if (media == null) {
-        setImageDrawable((null))
+        setImageDrawable(null)
         return
     }
      Glide.with(this)
