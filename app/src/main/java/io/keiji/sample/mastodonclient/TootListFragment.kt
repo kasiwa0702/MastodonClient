@@ -88,16 +88,17 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
             loadNext()
         }
 
-        private suspend fun showProgress() = withContext(Dispatchers.Main) {
-            binding?.swipeRefreshLayout?.isRefreshing = true
-        }
-
-        private suspend fun dismissProgress() = withContext(Dispatchers.Main) {
-            binding?.swipeRefreshLayout?.isRefreshing = false
-        }
-
         loadNext()
     }
+
+    private suspend fun showProgress() = withContext(Dispatchers.Main) {
+        binding?.swipeRefreshLayout?.isRefreshing = true
+    }
+
+    private suspend fun dismissProgress() = withContext(Dispatchers.Main) {
+        binding?.swipeRefreshLayout?.isRefreshing = false
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
