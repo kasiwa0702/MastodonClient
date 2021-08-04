@@ -1,6 +1,7 @@
 package io.keiji.sample.mastodonclient
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -116,8 +117,15 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
                 onlyMedia = true
             )
 
+            Log.d(TAG,"fetchPublicTimeline")
+
+            Thread.sleep(10 * 1000)
+
             tootList.addAll(tootListResponse.filter  {!it.sensitive })
+            Log.d(TAG, "addAll")
+
             reloadTootList()
+            Log.d(TAG, "relodTootList")
 
             hasNext.set(tootListResponse.isNotEmpty())
             isLoading.set(false)
@@ -126,6 +134,7 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
     }
     private suspend fun reloadTootList() = withContext(Dispatchers.Main) {
         adapter.notifyDataSetChanged()
+        Log.d(TAG, "dismissProgress")
     }
 
 }
