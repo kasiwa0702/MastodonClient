@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.keiji.sample.mastodonclient.databinding.FragmentTootListBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,7 +37,6 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
         .build()
     private val api = retrofit.create(MastodonApi::class.java)
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
@@ -108,18 +108,17 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
     }
 
     private fun loadNext(){
-        coroutineScope.launch {
+        lifecycleScope.launch {
             isLoading.set(true)
             showProgress()
 
-            val tootListResponse = api.fetchPublicTimeline(
-                maxId = tootList.lastOrNull()?.id,
-                onlyMedia = true
-            )
-
+            val tootListResponse = withContext(Dispatchers.IO) {
+                api.fetchPublicTimeline(
+                    maxId = tootList.lastOrNull()?.id,
+                    onlyMedia  = true
+                )
+            }
             Log.d(TAG,"fetchPublicTimeline")
-
-            Thread.sleep(10 * 1000)
 
             tootList.addAll(tootListResponse.filter  {!it.sensitive })
             Log.d(TAG, "addAll")
@@ -132,6 +131,8 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
             dismissProgress()
         }
     }
+
+
     private suspend fun reloadTootList() = withContext(Dispatchers.Main) {
         adapter.notifyDataSetChanged()
         Log.d(TAG, "dismissProgress")
