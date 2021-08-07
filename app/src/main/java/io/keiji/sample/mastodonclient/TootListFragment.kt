@@ -42,7 +42,7 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private var isLoading = AtomicBoolean<Boolean>()
+    private var isLoading = MutableLiveData<Boolean>()
     private var hasNext = AtomicBoolean().apply { set(true) }
 
     private val loadNextScrollListener = object  : RecyclerView.
