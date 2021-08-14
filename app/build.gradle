@@ -31,7 +31,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         def instanceProperties = project.rootProject.file('instance.properties')
-        if (!instanceProperties.exists8()){
+        if (!instanceProperties.exists()){
             instanceProperties.createNewFile()
         }
 
