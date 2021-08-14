@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:text="@{toot.account.username}"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="keiji" />
 
@@ -64,8 +64,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/content"
-            app:media="@{toot.topMedia}"
-            tools:src="@mipmap/ic_launcher" />
+            app:media="@{toot.topMedia}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
