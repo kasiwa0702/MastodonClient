@@ -44,7 +44,7 @@ android {
 
         buildConfigField("String","INSTANCE_URL","\"${INSTANCE_URL}\"")
         buildConfigField("String","USERNAME","\"${USERNAME}\"")
-        buildConfigField("String",ACCESS_TOKEN,"\"${ACCESS_TOKEN}\"")
+        buildConfigField("String","ACCESS_TOKEN","\"${ACCESS_TOKEN}\"")
     }
 
     buildTypes {

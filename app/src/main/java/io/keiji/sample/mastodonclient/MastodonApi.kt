@@ -2,6 +2,7 @@ package io.keiji.sample.mastodonclient
 
 
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface MastodonApi  {
@@ -11,4 +12,9 @@ interface MastodonApi  {
         @Query("max_id") maxId: String? = null,
         @Query("only_media") onlyMedia: Boolean = false
     ): List<Toot>
+    @GET("api/vl/timelines/home")
+    suspend fun fetchHomeTimeline(
+        @Header("Authorization") accessToken: String,
+        @Query("max_id") maxId: String? = null
+    ) : List<Toot>
 }
