@@ -26,7 +26,7 @@ class TootListViewModel (
 
     val isLoading = MutableLiveData<Boolean>()
     val accountInfo = MutableLiveData<Account>()
-    //var hasNext = true
+    var hasNext = true
 
     val tootList = MutableLiveData<ArrayList<Toot>>()
 
