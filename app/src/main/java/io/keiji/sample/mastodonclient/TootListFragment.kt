@@ -15,7 +15,8 @@ import io.keiji.sample.mastodonclient.databinding.FragmentTootListBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TootListFragment : Fragment(R.layout.fragment_toot_list) {
+class TootListFragment : Fragment(R.layout.fragment_toot_list),
+ TootListAdapter.Callback {
 
     companion object{
         val TAG = TootListFragment::class.java.simpleName
@@ -66,7 +67,7 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
        }
 
 
-        adapter = TootListAdapter(layoutInflater,tootListSnapshot)
+        adapter = TootListAdapter(layoutInflater,tootListSnapshot, this)
         layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.VERTICAL,
@@ -107,5 +108,13 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list) {
         super.onDestroyView()
 
         binding?.unbind()
+    }
+
+    override fun openDetail(toot: Toot) {
+        val fragment = TootDetailFragment.newInstance(toot)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(TootDetailFragment.TAG)
+            .commit()
     }
 }
