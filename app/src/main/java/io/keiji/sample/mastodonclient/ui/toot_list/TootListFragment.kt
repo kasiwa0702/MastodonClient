@@ -1,7 +1,6 @@
-package io.keiji.sample.mastodonclient
+package io.keiji.sample.mastodonclient.ui.toot_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,9 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.keiji.sample.mastodonclient.entity.Account
+import io.keiji.sample.mastodonclient.entity.Toot
+import io.keiji.sample.mastodonclient.*
 import io.keiji.sample.mastodonclient.databinding.FragmentTootListBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.keiji.sample.mastodonclient.ui.toot_detail.TootDetailFragment
 
 class TootListFragment : Fragment(R.layout.fragment_toot_list),
  TootListAdapter.Callback {

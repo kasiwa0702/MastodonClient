@@ -6,7 +6,7 @@
     <data>
         <variable
             name="toot"
-            type="io.keiji.sample.mastodonclient.Toot" />
+            type="io.keiji.sample.mastodonclient.entity.Toot" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        tools:context="TootListFragment">
+        tools:context="io.keiji.sample.mastodonclient.ui.toot_list.TootListFragment">
 
         <TextView
             android:id="@+id/user_name"

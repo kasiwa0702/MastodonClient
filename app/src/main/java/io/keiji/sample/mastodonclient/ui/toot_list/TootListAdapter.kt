@@ -1,10 +1,11 @@
-package io.keiji.sample.mastodonclient
+package io.keiji.sample.mastodonclient.ui.toot_list
 
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import io.keiji.sample.mastodonclient.entity.Toot
+import io.keiji.sample.mastodonclient.R
 import io.keiji.sample.mastodonclient.databinding.ListItemTootBinding
 
 class TootListAdapter(
@@ -32,7 +33,7 @@ class TootListAdapter(
         return ViewHolder(binding,callback)
 }
 
-    override fun onBindViewHolder(holder: TootListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tootList[position])
     }
 
