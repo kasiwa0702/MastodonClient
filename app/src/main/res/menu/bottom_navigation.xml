@@ -7,6 +7,6 @@
         android:title="User"/>
     <item
         android:id="@+id/menu_public"
-        android:icon="@drawable/ic_baseline_person_24"
+        android:icon="@drawable/ic_baseline_public_24"
         android:title="Public"/>
 </menu>

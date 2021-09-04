@@ -20,7 +20,7 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list),
  TootListAdapter.Callback {
 
     companion object{
-        val TAG = TootListFragment::class.java.simpleName
+        val TAG: String= TootListFragment::class.java.simpleName
 
         private const val BUNDLE_KEY_TIMELINE_TYPE_ORDINAL = "timeline_type_ordinal"
 
