@@ -14,7 +14,7 @@ import io.keiji.sample.mastodonclient.entity.Account
 import io.keiji.sample.mastodonclient.entity.Toot
 import io.keiji.sample.mastodonclient.*
 import io.keiji.sample.mastodonclient.databinding.FragmentTootListBinding
-import io.keiji.sample.mastodonclient.ui.toot_detail.TootDetailFragment
+import io.keiji.sample.mastodonclient.ui.toot_detail.TootDetailActivity
 
 class TootListFragment : Fragment(R.layout.fragment_toot_list),
  TootListAdapter.Callback {
@@ -139,10 +139,7 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list),
     }
 
     override fun openDetail(toot: Toot) {
-        val fragment = TootDetailFragment.newInstance(toot)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(TootDetailFragment.TAG)
-            .commit()
+        val intent = TootDetailActivity.newIntent(requireContext(),toot)
+        startActivity(intent)
     }
 }
