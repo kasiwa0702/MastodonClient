@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+   <data>
+
+       <variable
+           name="viewModel"
+           type="io.keiji.sample.mastodonclient.ui.toot_edit.TootEditViewModel" />
+
+   </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="いまなにをしてますか"
+            android:text="@={viewModel.status}"
+            app:layout_constrainBottom_toBottomOf="parent"
+            app:layout_constrainEnd_toEndOf="parent"
+            app:layout_constrainStart_toStartOf="parent"
+            app:layout_constrainTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
