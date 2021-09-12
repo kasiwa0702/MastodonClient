@@ -20,10 +20,10 @@
             android:layout_height="match_parent"
             android:hint="いまなにをしてますか"
             android:text="@={viewModel.status}"
-            app:layout_constrainBottom_toBottomOf="parent"
-            app:layout_constrainEnd_toEndOf="parent"
-            app:layout_constrainStart_toStartOf="parent"
-            app:layout_constrainTop_toTopOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
