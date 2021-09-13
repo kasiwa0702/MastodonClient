@@ -16,6 +16,7 @@ import io.keiji.sample.mastodonclient.BuildConfig
 import com.google.android.material.snackbar.Snackbar
 import io.keiji.sample.mastodonclient.R
 import io.keiji.sample.mastodonclient.databinding.FragmentTootEditBinding
+import kotlinx.coroutines.flow.callbackFlow
 
 class TootEditFragment : Fragment(R.layout.fragment_toot_edit) {
 
@@ -38,10 +39,20 @@ class TootEditFragment : Fragment(R.layout.fragment_toot_edit) {
         )
     }
 
+    interface Callback {
+        fun onPostComplete()
+    }
+
+    private var callback: Callback? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         setHasOptionsMenu(true)
+
+        if (context is Callback) {
+            callback = context
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,6 +67,7 @@ class TootEditFragment : Fragment(R.layout.fragment_toot_edit) {
         viewModel.postComplete.observe(viewLifecycleOwner, Observer {
             Toast.makeText(requireContext(),"投稿完了しました",Toast.LENGTH_LONG).
                     show()
+                    callback?.onPostComplete()
         })
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Snackbar.make(view,it,Snackbar.LENGTH_LONG).show()

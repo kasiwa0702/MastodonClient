@@ -43,7 +43,7 @@ class TootRepository (
     }
 
     suspend fun postToot(
-        string: String
+        status: String
     ): Toot = withContext(Dispatchers.IO) {
         return@withContext api.postToot(
             "Bearer ${userCredential.accessToken}",
