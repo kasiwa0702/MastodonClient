@@ -49,11 +49,11 @@ class TootListAdapter(
                 callback?.openDetail(toot)
             }
             binding.more.setOnClickListener {
-                PopupMenu(itemView.context,it).also {
+                PopupMenu(itemView.context,it).also { popupMenu ->
                     popupMenu.menuInflater.inflate(
                         R.menu.list_item_toot,
                         popupMenu.menu)
-                    popupMenu.setOnMenuItemClickListener {
+                    popupMenu.setOnMenuItemClickListener { menuItem ->
                         when(menuItem.itemId) {
                             R.id.menu_delete -> callback?.delete(toot)
                         }
