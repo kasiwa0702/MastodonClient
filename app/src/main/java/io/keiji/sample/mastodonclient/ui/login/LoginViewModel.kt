@@ -9,6 +9,9 @@ import io.keiji.sample.mastodonclient.repository.UserCredentialRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class LoginViewModel {
-
+class LoginViewModel (
+ private val instanceUrl: String,
+ private val coroutineScope: CoroutineScope,
+ application: Application
+) : AndroidViewModel(application) {
 }
