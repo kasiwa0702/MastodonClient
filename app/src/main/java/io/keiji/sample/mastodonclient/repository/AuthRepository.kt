@@ -1,4 +1,4 @@
-package io.keiji.sample.mastodonclient.repositor
+package io.keiji.sample.mastodonclient.repository
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -10,32 +10,32 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 public class AuthRepository (
-        instanceUrl: String
+    instanceUrl: String
 ) {
 
     private val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-    private val retrofit Retrofit.Builder()
-          .bassUrl(instanceUrl)
-          .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    private val retrofit = Retrofit.Builder()
+         .baseUrl(instanceUrl)
+         .addConverterFactory(MoshiConverterFactory.create(moshi))
+         .build()
     private val api = retrofit.create(MastodonApi::class.java)
 
     suspend fun token(
-            clientId: String,
-            clientSecret: String,
-            redirectUro: String,
-            scopes: String,
-            code: String
+        clientId: String,
+        clientSecret: String,
+        redirectUro: String,
+        scopes: String,
+        code: String
     ) : ResponseToken = withContext(Dispatchers.IO){
         return@withContext api.token(
-                clientId,
-                clientSecret,
-                redirectUro,
-                scopes,
-                code,
-                "authorization_code"
+            clientId,
+            clientSecret,
+            redirectUro,
+            scopes,
+            code,
+            "authorization_code"
         )
     }
 }

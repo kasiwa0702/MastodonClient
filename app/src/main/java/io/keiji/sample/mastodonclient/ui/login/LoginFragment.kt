@@ -32,6 +32,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val onObtainCode = fun (code: String) {
 
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
