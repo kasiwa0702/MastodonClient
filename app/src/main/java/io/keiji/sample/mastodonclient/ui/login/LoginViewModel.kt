@@ -25,14 +25,13 @@ class LoginViewModel (
 
  fun requestAccessToken(
   clientId: String,
-  clientId: String,
+  clientSecret: String,
   redirectUri: String,
   scopes: String,
   code: String
  ) {
   coroutineScope.launch {
    val responseToken = authRepository.token(
-    instanceUrl,
     clientId,
     clientSecret,
     redirectUri,
