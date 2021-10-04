@@ -11,6 +11,8 @@ import io.keiji.sample.mastodonclient.entity.Toot
 import io.keiji.sample.mastodonclient.entity.UserCredential
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.HttpURLConnection
 import io.keiji.sample.mastodonclient.repository.AccountRepository
 import io.keiji.sample.mastodonclient.repository.TootRepository
 import io.keiji.sample.mastodonclient.repository.UserCredentialRepository
