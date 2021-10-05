@@ -46,7 +46,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             REDIRECT_URI,
             BuildConfig.CLIENT_SCOPES,
             BuildConfig.CLIENT_SCOPES,
-            code
         )
     }
 
@@ -83,7 +82,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         startActivity(intent)
 
-        bindingData.webview.webViewClient = InnerWebViewClient(onObtainCode)
         bindingData.webview.settings.javaScriptEnabled = true
         bindingData.webview.loadUrl(authUri.toString())
 

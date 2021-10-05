@@ -35,6 +35,8 @@ class TootListViewModel (
 
     val loginRepository = MutableLiveData<Boolean>()
 
+
+
     val isLoading = MutableLiveData<Boolean>()
     val accountInfo = MutableLiveData<Account>()
     var hasNext = true
