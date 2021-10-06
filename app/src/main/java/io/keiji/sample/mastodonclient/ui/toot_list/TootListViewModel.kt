@@ -33,9 +33,7 @@ class TootListViewModel (
 
     private lateinit var userCredential: UserCredential
 
-    val loginRepository = MutableLiveData<Boolean>()
-
-
+    val loginRequired = MutableLiveData<Boolean>()
 
     val isLoading = MutableLiveData<Boolean>()
     val accountInfo = MutableLiveData<Account>()

@@ -92,24 +92,9 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list),
                 viewModel.loadNext()
             }
 
-            if (requestCode == REQUEST_CODE_LOGIN) {
-                handleLoginActivityResult(resultCode)
-            }
         }
 
-        private fun handleLoginActivityResult(requestCode: Int) {
-            when (requestCode) {
-                Activity.RESULT_OK -> viewModel.reloadUserCredential()
-                else -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "ログインが完了しませんでした",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    requireActivity().finish()
-                }
-            }
-        }
+
     }
 
 
@@ -185,6 +170,24 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list),
             && requestCode == Activity.RESULT_OK) {
             viewModel.clear()
             viewModel.loadNext()
+        }
+
+        if (requestCode == REQUEST_CODE_LOGIN) {
+            handleLoginActivityResult(resultCode)
+        }
+    }
+
+    private fun handleLoginActivityResult(requestCode: Int) {
+        when (requestCode) {
+            Activity.RESULT_OK -> viewModel.reloadUserCredential()
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    "ログインが完了しませんでした",
+                    Toast.LENGTH_LONG
+                ).show()
+                requireActivity().finish()
+            }
         }
     }
 
