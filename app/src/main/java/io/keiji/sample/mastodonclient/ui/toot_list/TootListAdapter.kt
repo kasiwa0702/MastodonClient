@@ -4,14 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.keiji.sample.mastodonclient.entity.Toot
 import io.keiji.sample.mastodonclient.R
 import io.keiji.sample.mastodonclient.databinding.ListItemTootBinding
+import kotlinx.coroutines.*
 
 class TootListAdapter(
     private val layoutInflater: LayoutInflater,
-    private val tootList: ArrayList<Toot>,
+    private val coroutineScope: CoroutineScope,
     private val callback: Callback?
 ) : RecyclerView.Adapter<TootListAdapter.ViewHolder>() {
 
@@ -19,6 +21,41 @@ class TootListAdapter(
      fun openDetail(toot: Toot)
      fun delete(toot: Toot)
     }
+
+    private class RecyclerDiffCallback(
+        private val oldList: List<Toot>,
+        private val newList: List<Toot>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ) = oldList[oldItemPosition] == newList[newItemPosition]
+
+        override fun areContentsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ) = oldList[oldItemPosition].id == newList[newItemPosition].id
+    }
+
+        var tootList: ArrayList<Toot> = ArrayList()
+         set(value) {
+             coroutineScope.launch(DisposableHandle.Main) {
+                 val diffResult = withContext(DisposableHandle){
+                     DiffUtil.calculateDiff(
+                         RecyclerDiffCallback(field,value)
+                     )
+                 }
+
+                 field = value
+
+                 diffResult.dispatchUpdatesTo(this@TootListAdapter)
+             }
+         }
+      }
 
     override fun getItemCount() = tootList.size
 
