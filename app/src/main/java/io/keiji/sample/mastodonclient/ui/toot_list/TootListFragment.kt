@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import io.keiji.sample.mastodonclient.entity.Account
 import io.keiji.sample.mastodonclient.entity.Toot
 import io.keiji.sample.mastodonclient.ui.login.LoginActivity
@@ -127,21 +128,24 @@ class TootListFragment : Fragment(R.layout.fragment_toot_list),
             launchTootEditActivity()
         }
 
-        viewModel.loginRepository.observe(viewLifecycleOwner, Observer {
+        viewModel.loginRequired.observe(viewLifecycleOwner, Observer {
             if (it) {
                 launchLoginActivity()
             }
         })
 
-            viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding?.swipeRefreshLayout?.isRefreshing = it
         })
-            viewModel.accountInfo.observe(viewLifecycleOwner, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(bindingData.swipeRefreshLayout,it,Snackbar.LENGTH_LONG).show()
+        })
+        viewModel.accountInfo.observe(viewLifecycleOwner, Observer {
                 showAccountInfo(it)
-            })
-            viewModel.tootList.observe(viewLifecycleOwner, Observer {
+        })
+        viewModel.tootList.observe(viewLifecycleOwner, Observer {
                 adapter.notifyDataSetChanged()
-            })
+        })
 
         viewLifecycleOwner.lifecycle.addObserver(viewModel)
     }

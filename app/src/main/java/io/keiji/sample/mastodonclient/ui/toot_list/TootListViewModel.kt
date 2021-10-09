@@ -12,6 +12,7 @@ import io.keiji.sample.mastodonclient.entity.UserCredential
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.IOException
 import java.net.HttpURLConnection
 import io.keiji.sample.mastodonclient.repository.AccountRepository
 import io.keiji.sample.mastodonclient.repository.TootRepository
@@ -36,6 +37,7 @@ class TootListViewModel (
     val loginRequired = MutableLiveData<Boolean>()
 
     val isLoading = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
     val accountInfo = MutableLiveData<Account>()
     var hasNext = true
 
@@ -58,42 +60,79 @@ class TootListViewModel (
 
             val tootListSnapshot = tootList.value ?: ArrayList()
             val maxId = tootListSnapshot.lastOrNull()?.id
-            val tootListResponse = when(timelineType) {
-                TimelineType.PublicTimeline -> {
-                    tootRepository.fetchPublicTimeline(
-                        maxId = maxId,
-                        onlyMedia = true
+
+            try {
+                val tootListResponse = when (timelineType) {
+                    TimelineType.PublicTimeline -> {
+                        tootRepository.fetchPublicTimeline(
+                            maxId = maxId,
+                            onlyMedia = true
+                        )
+                    }
+                    TimelineType.HomeTimeline -> {
+                        tootRepository.fetchHomeTimeline(
+                            maxId = maxId
+                        )
+                    }
+                }
+
+                tootListSnapshot.addAll(tootListResponse)
+                tootList.postValue(tootListSnapshot)
+                hasNext = tootListResponse.isNotEmpty()
+            } catch (e: HttpException) {
+                when (e.code()) {
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        errorMessage.postValue("必要な権限がありません")
+                    }
+                } catch (e: IOException){
+                    errorMessage.postValue(
+                        "サーバーに接続出来ませんでした。${e.message}"
                     )
                 }
-                TimelineType.HomeTimeline -> {
-                    tootRepository.fetchHomeTimeline(
-                        maxId = maxId
-                    )
+                } finally {
+                    isLoading.postValue(false)
                 }
             }
-
-            tootListSnapshot.addAll(tootListResponse)
-            tootList.postValue(tootListSnapshot)
-
-            hasNext = tootListResponse.isNotEmpty()
-            isLoading.postValue(false)
         }
     }
 
     private suspend fun updateAccountInfo() {
-        val accountInfoSnapshot = accountInfo.value
-            ?: accountRepository.verifyAccountCredential()
+        try {
+            val accountInfoSnapshot = accountInfo.value
+                ?: accountRepository.verifyAccountCredential()
 
-        accountInfo.postValue(accountInfoSnapshot)
+            accountInfo.postValue(accountInfoSnapshot)
+        } catch (e: HttpException) {
+            when(e.code()) {
+                HttpURLConnection.HTTP_FORBIDDEN -> {
+                    errorMessage.postValue("必要な権限がありません")
+                }
+            }
+        } catch (e: IOException){
+            errorMessage.postValue(
+                "サーバーに接続出来ませんでした。${e.message}"
+            )
+        }
     }
 
     fun delete(toot: Toot) {
         coroutineScope.launch {
-            tootRepository.delete(toot.id)
+            try {
+                tootRepository.delete(toot.id)
 
-            val tootListSnapshot = tootList.value
-            tootListSnapshot?.remove(toot)
-            tootList.postValue(tootListSnapshot!!)
+                val tootListSnapshot = tootList.value?: listOf()
+                tootListSnapshot?.remove(toot)
+                tootList.postValue(tootListSnapshot)
+            } catch (e: HttpException) {
+                when (e.code()){
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        errorMessage.postValue("必要な権限がありません")
+                }
+                } catch (e: IOException) {
+                    errorMessage.postValue(
+                        "サーバーに接続出来ませんでした。${e.message}"
+                    )
+            }
         }
     }
 
