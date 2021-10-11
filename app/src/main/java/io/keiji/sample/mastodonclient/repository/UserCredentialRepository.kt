@@ -42,12 +42,14 @@ class UserCredentialRepository (
         username: String
     ) : UserCredential? = withContext(Dispatchers.Main) {
 
-        val pref = getPreference(instanceUrl)
-        ?: return@withContext null
+        return@withContext UserCredential(BuildConfig.INSTANCE_URL,BuildConfig.USERNAME,BuildConfig.ACCESS_TOKEN)
 
-        val accessToken = pref.getString(KEY_ACCESS_TOKEN,null)
-            ?: return@withContext null
-
-        return@withContext UserCredential(instanceUrl,username,accessToken)
+//        val pref = getPreference(instanceUrl)
+//        ?: return@withContext null
+//
+//        val accessToken = pref.getString(KEY_ACCESS_TOKEN,null)
+//            ?: return@withContext null
+//
+//        return@withContext UserCredential(instanceUrl,username,accessToken)
     }
 }

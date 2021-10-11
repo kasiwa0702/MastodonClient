@@ -1,14 +1,20 @@
 package io.keiji.sample.mastodonclient.ui.toot_edit
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import io.keiji.sample.mastodonclient.entity.LocalMedia
+import io.keiji.sample.mastodonclient.repository.MediaRepository
 import io.keiji.sample.mastodonclient.repository.TootRepository
 import io.keiji.sample.mastodonclient.repository.UserCredentialRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.handleCoroutineException
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.IOException
 import java.net.HttpURLConnection
+import javax.xml.transform.OutputKeys.MEDIA_TYPE
 
 class TootEditViewModel (
     private val instanceUrl: String,
@@ -22,6 +28,8 @@ class TootEditViewModel (
     )
 
     val status = MutableLiveData<String>()
+
+    private val mediaRepository = MediaRepository(application)
 
     val loginRequired = MutableLiveData<Boolean>()
 
@@ -56,4 +64,30 @@ class TootEditViewModel (
             }
         }
     }
+
+    val mediaAttachments = MutableLiveData<ArrayList<LocalMedia>>()
+
+    fun addMedia(mediaUri: Uri) {
+         coroutineScope.launch {
+            try {
+                val bitmap = mediaFileRepository.readBitmap(mediaUri)
+                val tempFile = mediaRepository.saveBitmap(bitmap)
+
+                val newMediaAttachments = ArrayList<LocalMedia>()
+                mediaAttachments.value?.also {
+                    newMediaAttachments.addAll(it)
+                }
+                newMediaAttachments.add(LocalMedia(tempFile, MEDIA_TYPE))
+                mediaAttachments.postValue(newMediaAttachments)
+
+            } catch (e: IOException) {
+                handleCoroutineException(mediaUri, e)
+            }
+        }
+    }
+
+     private fun handleMediaException(mediaUri: Uri, e: IOException) {
+         errorMessage.postValue("メディアを読み込めません ${e.message} ${mediaUri}")
+     }
 }
+

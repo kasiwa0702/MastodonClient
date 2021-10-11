@@ -43,8 +43,8 @@ class TootListAdapter(
 
         var tootList: ArrayList<Toot> = ArrayList()
          set(value) {
-             coroutineScope.launch(DisposableHandle.Main) {
-                 val diffResult = withContext(DisposableHandle){
+             coroutineScope.launch(Dispatchers.Main) {
+                 val diffResult = withContext(Dispatchers.Default){
                      DiffUtil.calculateDiff(
                          RecyclerDiffCallback(field,value)
                      )
@@ -89,7 +89,8 @@ class TootListAdapter(
                 PopupMenu(itemView.context,it).also { popupMenu ->
                     popupMenu.menuInflater.inflate(
                         R.menu.list_item_toot,
-                        popupMenu.menu)
+                        popupMenu.menu
+                    )
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when(menuItem.itemId) {
                             R.id.menu_delete -> callback?.delete(toot)

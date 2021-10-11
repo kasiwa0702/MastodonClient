@@ -48,6 +48,10 @@ class TootListViewModel (
         reloadUserCredential()
     }
 
+    fun reloadUserCredential() {
+        TODO("Not yet implemented")
+    }
+
     fun clear() {
         val tootListSnapshot = tootList.value ?: return
         tootListSnapshot.clear()
@@ -87,17 +91,16 @@ class TootListViewModel (
                     HttpURLConnection.HTTP_FORBIDDEN -> {
                         errorMessage.postValue("必要な権限がありません")
                     }
+                }
                 } catch (e: IOException){
                     errorMessage.postValue(
                         "サーバーに接続出来ませんでした。${e.message}"
                     )
-                }
                 } finally {
                     isLoading.postValue(false)
                 }
             }
         }
-    }
 
     private suspend fun updateAccountInfo() {
         try {
@@ -130,34 +133,32 @@ class TootListViewModel (
                     }
                 tootList.postValue(newTootList)
             } catch (e: HttpException) {
-                when (e.code()){
+                when (e.code()) {
                     HttpURLConnection.HTTP_FORBIDDEN -> {
                         errorMessage.postValue("必要な権限がありません")
-                }
-                } catch (e: IOException) {
+
+                    } catch(e: IOException) {
                     errorMessage.postValue(
                         "サーバーに接続出来ませんでした。${e.message}"
                     )
+                 }
+                }
+
+                fun reloadUserCredential() {
+                    coroutineScope.launch {
+                        val credential = userCredentialRepository
+                            .find(instanceUrl, username)
+                        if (credential == null) {
+                            loginRequired.postValue(true)
+                            return@launch
+                        }
+
+                        tootRepository = TootRepository(credential)
+                        accountRepository = AccountRepository(credential)
+                        userCredential = credential
+
+                        clear()
+                        loadNext()
+                    }
+                }
             }
-        }
-    }
-
-    fun reloadUserCredential() {
-        coroutineScope.launch {
-            val credential = userCredentialRepository
-                .find(instanceUrl,username)
-            if (credential == null) {
-                loginRequired.postValue(true)
-                return@launch
-            }
-
-            tootRepository = TootRepository(credential)
-            accountRepository = AccountRepository(credential)
-            userCredential = credential
-
-            clear()
-            loadNext()
-        }
-    }
-}
-
