@@ -80,7 +80,7 @@ class TootEditViewModel (
     fun addMedia(mediaUri: Uri) {
          coroutineScope.launch {
             try {
-                val bitmap = mediaFileRepository.readBitmap(mediaUri)
+                val bitmap = mediaRepository.readBitmap(mediaUri)
                 val tempFile = mediaRepository.saveBitmap(bitmap)
 
                 val newMediaAttachments = ArrayList<LocalMedia>()
@@ -100,4 +100,3 @@ class TootEditViewModel (
          errorMessage.postValue("メディアを読み込めません ${e.message} ${mediaUri}")
      }
 }
-

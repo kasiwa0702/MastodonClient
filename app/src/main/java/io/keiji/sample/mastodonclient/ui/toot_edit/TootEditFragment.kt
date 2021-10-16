@@ -112,6 +112,8 @@ class TootEditFragment : Fragment(R.layout.fragment_toot_edit) {
             type = "image/*"
         }
         startActivityForResult(intent, REQUEST_CHOOSE_MEDIA)
+        val chooser = Intent.createChooser(intent,"画像が選ぶアプリの選択")
+        startActivityForResult(intent, REQUEST_CHOOSE_MEDIA)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
