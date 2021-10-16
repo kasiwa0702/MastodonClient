@@ -55,7 +55,7 @@ class TootListAdapter(
                  diffResult.dispatchUpdatesTo(this@TootListAdapter)
              }
          }
-      }
+
 
     override fun getItemCount() = tootList.size
 

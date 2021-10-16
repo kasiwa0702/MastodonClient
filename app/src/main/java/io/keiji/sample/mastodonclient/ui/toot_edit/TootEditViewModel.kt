@@ -37,14 +37,14 @@ class TootEditViewModel (
     val errorMessage = MutableLiveData<String>()
 
     fun postToot() {
-     val statusSnapshot = status.value ?: return
-     if (statusSnapshot.isBlank()) {
-         errorMessage.postValue("投稿内容がありません")
-         return
-     }
+        val statusSnapshot = status.value ?: return
+        if (statusSnapshot.isBlank()) {
+            errorMessage.postValue("投稿内容がありません")
+            return
+        }
 
         coroutineScope.launch {
-            val credential = userCredentialRepository.find(instanceUrl,username)
+            val credential = userCredentialRepository.find(instanceUrl, username)
             if (credential == null) {
                 loginRequired.postValue(true)
                 return@launch
@@ -52,7 +52,7 @@ class TootEditViewModel (
             val tootRepository = TootRepository(credential)
             try {
                 val uploadedMediaIds = mediaAttachments.value?.map {
-                    tootRepository.postMedia(it.file,it.mediaType)
+                    tootRepository.postMedia(it.file, it.mediaType)
                 }?.map { it.id }
 
                 tootRepository.postToot(
@@ -66,14 +66,14 @@ class TootEditViewModel (
                         errorMessage.postValue("必要な権限がありません")
                     }
                 }
-            }catch (e: IOException) {
+            } catch (e: IOException) {
                 errorMessage.postValue(
                     "サーバーに接続出来ません"
                 )
             }
-            }
         }
     }
+
 
     val mediaAttachments = MutableLiveData<ArrayList<LocalMedia>>()
 
@@ -91,7 +91,7 @@ class TootEditViewModel (
                 mediaAttachments.postValue(newMediaAttachments)
 
             } catch (e: IOException) {
-                handleCoroutineException(mediaUri, e)
+                handleMediaException(mediaUri, e)
             }
         }
     }

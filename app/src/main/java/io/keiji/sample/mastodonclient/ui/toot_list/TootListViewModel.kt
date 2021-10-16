@@ -136,7 +136,8 @@ class TootListViewModel (
                 when (e.code()) {
                     HttpURLConnection.HTTP_FORBIDDEN -> {
                         errorMessage.postValue("必要な権限がありません")
-
+                    }
+                }
                     } catch(e: IOException) {
                     errorMessage.postValue(
                         "サーバーに接続出来ませんでした。${e.message}"
@@ -161,4 +162,4 @@ class TootListViewModel (
                         loadNext()
                     }
                 }
-            }
+            }}
